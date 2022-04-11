@@ -1,19 +1,82 @@
 #!/usr/bin/env bash
 
-# super simple ukrainian-flag bash script
+# not so super simple ukrainian-flag bash script
 
 # user=${USER:-$(id -un)}
 # hostname=${HOSTNAME:-${hostname:-$(hostname)}}
 
-block=███████████████████████████████
+block=█████████████████████████
+addcaption=false
+capt=""
+t=1
+size=8
+
 run() {
   for i in $(seq 0 $1); do echo "$(tput setaf 4)$block"; done
   for i in $(seq 0 $1); do echo "$(tput setaf 3)$block"; done
   tput sgr0
 }
 
-case $1 in
-  -m) run 4 && figlet -f moscow 'SLAVA'$'\n''UKRAINE' | sed 's/#/█/g' ;;
-  -h) echo "${0##*/} usage: [-m]" ;;
-  *) block=${block}$block run 8 ;;
+runtrident()
+{
+echo "          ██         "
+echo " ██      ████      ██"
+echo " ████    ████    ████"
+echo " ██ ██    ██    ██ ██"
+echo " ██ ██    ██    ██ ██"
+echo " ██  ██   ██   ██  ██"
+echo " ██  ██   ██   ██  ██"
+echo " ██  ██  ████  ██  ██"
+echo " █████   ████   █████"
+echo " ██  █  ██  ██  █  ██"
+echo " ██  █████  █████  ██"
+echo " ██   ██ ████ ██   ██"
+echo " ████████████████████"
+echo "      ███ ██ ███     "
+echo "        ██████       "
+echo "          ██         "
+}
+
+caption(){
+  if [ -n "$capt" ]; then
+    figlet -f moscow $capt | sed 's/#/█/g'
+  else
+    figlet -f moscow 'SLAVA'$'\n''UKRAINE' | sed 's/#/█/g' 
+  fi
+}
+
+while test $# -gt 0; do
+  case "$1" in
+    # -h) echo "${0##*/} usage: [-m]"
+    #     exit 0
+    #     ;;
+    -h) echo "usage: " 
+        echo "   [-h] - show this message"
+        echo "   [-m] - add message below, defaults to Slava Ukraini"
+        echo "   [-t] - change type"
+        echo "          1 - flag"
+        echo "          2 - ukrainian trident"
+        echo "   [*] - change size of the flag"
+        exit 0
+        ;;
+    -t) shift
+        t=$1
+        shift
+        ;;
+    -m) shift
+        addcaption=true
+        size=4
+        [ -n "$1" ] && capt=$1
+        shift
+        ;;
+    *)  size=$1
+        break ;;
+  esac
+done
+
+case "$t" in
+  1) block=${block}$block run $size;;
+  2) runtrident ;;
 esac
+
+$addcaption && caption
