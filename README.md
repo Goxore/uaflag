@@ -12,9 +12,13 @@ chmod +x ./uaflag
 
 ## usage
 by default `uaflag` displays the ukrainian flag.
+
 `-m` caption under the flag that now can be changed, but defaults to "СЛАВА УКРАИНЕ" under a smaller ukrainian flag. 
+
 `-t` change between showing flag(1) or ukrainian trident(2).
+
 `-h` get help.
+
 `*` number at the end will impact flag's size.
 
 ## Special thanks
